@@ -241,7 +241,7 @@ function photos(data) {
 
 	    var errorMessageLong = $('<p>' , {
     		class: 'error-para-long',
-    		// html: `${data.error.message}` ,
+    		html: `${data.error.message}` ,
     		css: {
     			'font-size' : '1em' ,
     			'font-family' : 'PT Sans' ,
