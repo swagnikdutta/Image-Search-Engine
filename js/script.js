@@ -227,7 +227,7 @@ function photos(data) {
 
     	var errorMessageShort = $('<p>' , {
     		class: 'error-para-short',
-    		html: `Usage Limits expired! <br> Kal aaiyo wapas. ` ,
+    		html: `Usage Limits expired! <br> Try again later. ` ,
     		css: {
     			'font-size' : '3em' ,
     			'font-family' : 'PT Sans' ,
