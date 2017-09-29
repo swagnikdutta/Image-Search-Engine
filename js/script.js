@@ -5,7 +5,7 @@ $('document').ready(function() {
 	var currentCarouselImageIdNo;
     var num = 8; 
     var start = 1;
-    var keyword = "minions"; // default
+    var keyword;
     
 
     $('#loadmore').css({
@@ -16,7 +16,12 @@ $('document').ready(function() {
 
 		keyword = $('#input-field').val();		
 		$('.tiles').remove();
-		fetchData(keyword, start);
+
+		if(keyword != ''){
+			fetchData(keyword, start);
+		} else {
+			alert('Field must not be empty');
+		}
 	})
 
     $('#gallery-container').on('click','.tiles', function(e){
@@ -42,7 +47,18 @@ $('document').ready(function() {
     		nstr = nstr.substr(i);
     		nstr = nstr.substr(0,nstr.indexOf('"'))
     	}
-    	currentCarouselImageIdNo = nstr;   
+    	currentCarouselImageIdNo = nstr;
+
+        // initially carousel is closed
+        // then u click on an image tile
+        // carousel open up image is diplayed in large dimensions. 
+        // Now highlight the tile which contains the image.
+        // to do that add class 'highlight-image'
+        // 
+        // So basically, only if carousel is open, highlight the tile.
+        if(! $('.carousel').hasClass('carousel-closed')){
+            $(`#tile${currentCarouselImageIdNo}`).addClass('highlight-image');
+        }
 
     	// fix navigation on image click(incase first or lastimage is clicked)
     	monitorNavigation(0);    
@@ -69,6 +85,11 @@ $('document').ready(function() {
     $('.fa-chevron-left').click(function(){
 
    		monitorNavigation(-1);
+        //highlight apt image
+        $('.tiles').removeClass('highlight-image');
+        $(`#tile${currentCarouselImageIdNo}`).addClass('highlight-image');
+        //
+
    		var prevImage_src = $(`#${currentCarouselImageIdNo}`).attr('src');
    		var image = $('<img/>' , {
     		src: prevImage_src,
@@ -90,6 +111,10 @@ $('document').ready(function() {
 	$('.fa-chevron-right').click(function(){
 
    		monitorNavigation(1);
+        //highlight apt image
+        $('.tiles').removeClass('highlight-image');
+        $(`#tile${currentCarouselImageIdNo}`).addClass('highlight-image');
+        //
    		var prevImage_src = $(`#${currentCarouselImageIdNo}`).attr('src');
    		var image = $('<img/>' , {
     		src: prevImage_src,
@@ -118,6 +143,7 @@ $('document').ready(function() {
 
     $('.fa-times').click(function(){
     	onImageClick();
+        restoreOpacity();
     });
 
     function monitorNavigation(val){
@@ -146,6 +172,10 @@ $('document').ready(function() {
 	    	})
 	    } else{
 
+            // when carousel closed by clicking on different
+            // tile then restore opacity
+            restoreOpacity();
+
 	    	// if carousel is open hide the loadmore button
 	    	$('#loadmore').css({
 	    		'display' : ''
@@ -156,12 +186,22 @@ $('document').ready(function() {
     	$('.tiles, #panel-top, #loadmore').toggleClass('blur');
 	}
 
+    function restoreOpacity(){
+        $('.tiles').removeClass('highlight-image');
+    }
+
 });
 
 
 function fetchData(keyword, start){
 
-	var pm_url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyC3ztOjElYBVj8q2BSmIKJ4EdXVtDq6R18&cx=000966039869815770295:1ugxnp2e6nw&start=${start}&searchType=image&safe=off&num=8&q=${keyword}`;
+    // mine
+	// var pm_url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyC3ztOjElYBVj8q2BSmIKJ4EdXVtDq6R18&cx=000966039869815770295:1ugxnp2e6nw&start=${start}&searchType=image&safe=off&num=8&q=${keyword}`;
+
+    // not mine
+    var pm_url = `https://www.googleapis.com/customsearch/v1?key=AIzaSyD6cZJdS4fjnrRzvM-WlEBeXKCEaBN9bbc&cx=017725526660795934517:_kokdupgki4&start=${start}&searchType=image&safe=off&num=8&q=${keyword}`;
+    
+    console.log(pm_url);
     
     $.ajax({
         url: pm_url,
@@ -198,9 +238,11 @@ function photos(data) {
 	    		}
 	    	});
 
+            var k = parseInt(i)+parseInt(page);
+
 	    	var imageDiv = $('<div>' , {
 	    		class: 'col-md-3 tiles',
-	    		id: `tile${i}`,
+	    		id: `tile${k}`,
 	    		css: {
 	    			'border' : '4px solid #231f20',
 	    			'height' : '16em',
@@ -221,32 +263,39 @@ function photos(data) {
 
     } catch(e){
 
-    	var errorMessageShort = $('<p>' , {
-    		class: 'error-para-short',
-    		html: `Usage Limits expired! <br> Kal aaiyo wapas. ` ,
-    		css: {
-    			'font-size' : '3em' ,
-    			'font-family' : 'PT Sans' ,
-    			'color' : 'lightgrey' ,
-    			'margin-top' : '2em'
-    		}
-    	});
+        // if error is 'dailyLimitExceeded'
+        if(data.error.errors[0].reason === 'dailyLimitExceeded'){
+            var errorMessageShort = $('<p>' , {
+                class: 'error-para-short',
+                html: `Usage Limits expired! <br> Try again later. ` ,
+                css: {
+                    'font-size' : '3em' ,
+                    'font-family' : 'PT Sans' ,
+                    'color' : 'lightgrey' ,
+                    'margin-top' : '2em'
+                }
+            });
 
-    	var galleryContainer = $('#gallery-container');
-	    errorMessageShort.appendTo(galleryContainer);
+            var galleryContainer = $('#gallery-container');
+            errorMessageShort.appendTo(galleryContainer);
 
-	    var errorMessageLong = $('<p>' , {
-    		class: 'error-para-long',
-    		// html: `${data.error.message}` ,
-    		css: {
-    			'font-size' : '1em' ,
-    			'font-family' : 'PT Sans' ,
-    			'color' : 'grey' ,
-    			'margin-top' : '5em'
-    		}
-    	});
-    	errorMessageLong.appendTo(galleryContainer);
-    }
+            var errorMessageLong = $('<p>' , {
+                class: 'error-para-long',
+                html: `${data.error.message}` ,
+                css: {
+                    'font-size' : '1em' ,
+                    'font-family' : 'PT Sans' ,
+                    'color' : 'grey' ,
+                    'margin-top' : '5em'
+                }
+            });
+            errorMessageLong.appendTo(galleryContainer);
+
+        } else { // some other kind of error
+            alert('data.error.message');
+        }
+
+    } // catch
 
 }
 

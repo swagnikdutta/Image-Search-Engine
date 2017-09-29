@@ -170,3 +170,7 @@ body{
     -ms-user-select: none;
     user-select: none;
 }
+
+.highlight-image{
+	opacity: 0.5;
+}
