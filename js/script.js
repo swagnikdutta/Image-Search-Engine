@@ -16,7 +16,10 @@ $('document').ready(function() {
 
 		keyword = $('#input-field').val();		
 		$('.tiles').remove();
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/master
 		if(keyword != ''){
 			fetchData(keyword, start);
 		} else {
@@ -263,6 +266,7 @@ function photos(data) {
 
     } catch(e){
 
+<<<<<<< HEAD
         // if error is 'dailyLimitExceeded'
         if(data.error.errors[0].reason === 'dailyLimitExceeded'){
             var errorMessageShort = $('<p>' , {
@@ -296,6 +300,34 @@ function photos(data) {
         }
 
     } // catch
+=======
+    	var errorMessageShort = $('<p>' , {
+    		class: 'error-para-short',
+    		html: `Usage Limits expired! <br> Try again later. ` ,
+    		css: {
+    			'font-size' : '3em' ,
+    			'font-family' : 'PT Sans' ,
+    			'color' : 'lightgrey' ,
+    			'margin-top' : '2em'
+    		}
+    	});
+
+    	var galleryContainer = $('#gallery-container');
+	    errorMessageShort.appendTo(galleryContainer);
+
+	    var errorMessageLong = $('<p>' , {
+    		class: 'error-para-long',
+    		html: `${data.error.message}` ,
+    		css: {
+    			'font-size' : '1em' ,
+    			'font-family' : 'PT Sans' ,
+    			'color' : 'grey' ,
+    			'margin-top' : '5em'
+    		}
+    	});
+    	errorMessageLong.appendTo(galleryContainer);
+    }
+>>>>>>> origin/master
 
 }
 
