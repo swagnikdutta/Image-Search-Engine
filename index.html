@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+	<title>Image search engine</title>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+
+	<link href="https://fonts.googleapis.com/css?family=News+Cycle:400,700|PT+Sans:400,700|Ubuntu" rel="stylesheet">
+
+	<link rel="stylesheet" type="text/css" href="css/main.css">
+	<script type="text/javascript" src="js/script.js"></script>
+	<script type="text/javascript" src="js/jquery-3.1.1.min.js"></script>
+
+	<script src="https://use.fontawesome.com/126a15c073.js"></script>
+
+</head>
+<body>
+
+	<div class="container-fluid">
+
+		<div class="row">
+			<div class="col-md-12 carousel carousel-closed" id="close-icon-div">
+				<i class="fa fa-times" aria-hidden="true"></i>
+			</div>
+		</div>
+
+		<div class="row" id="panel-top">
+			<div class="col-md-12">
+
+                <div id="input-container">
+                    <input type="text" placeholder="Search for image" id="input-field">
+                    <button id="search-button">Search</button>
+                </div>
+
+			</div>
+		</div>
+
+        <div class="row" id="panel-bottom">
+            <div class="col-md-12" id="gallery-container">
+            	
+            	<div id="prev" class="carousel carousel-closed noSelect">
+					<i class="fa fa-chevron-left" aria-hidden="true"></i>
+				</div>		
+
+				<div id="imageBox" class="carousel carousel-closed noSelect">
+					
+				</div>
+
+				<div id="next" class="carousel carousel-closed noSelect">
+					<i class="fa fa-chevron-right" aria-hidden="true"></i>
+				</div>
+            </div>
+            <button id="loadmore">Load more</button>
+        </div>
+	</div>
+	
+
+</body>
+</html>
+
