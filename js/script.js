@@ -5,7 +5,7 @@ $('document').ready(function() {
 	var currentCarouselImageIdNo;
     var num = 8; 
     var start = 1;
-    var keyword = "minions"; // default
+    var keyword;
     
 
     $('#loadmore').css({
@@ -16,7 +16,11 @@ $('document').ready(function() {
 
 		keyword = $('#input-field').val();		
 		$('.tiles').remove();
-		fetchData(keyword, start);
+		if(keyword != ''){
+			fetchData(keyword, start);
+		} else {
+			alert('Field must not be empty');
+		}
 	})
 
     $('#gallery-container').on('click','.tiles', function(e){
